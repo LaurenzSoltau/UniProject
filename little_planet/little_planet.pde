@@ -27,6 +27,7 @@ void setup() {
   spike_100_20 = loadImage("spike100x20.png");
   game = new GameHandler();
   levelHandler = new LevelHandler();
+  objects = levelHandler.loadLevel(1);
 }
 
 
@@ -41,9 +42,7 @@ void keyPressed() {
 
 void draw() {
   if (state == START) {
-    
   }
-  objects = levelHandler.loadLevel(1);
   game.calcPosition(planets);
   if (game.checkCollisionCC(planets) || game.checkCollisionCR(objects))
     exit();

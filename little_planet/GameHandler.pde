@@ -3,8 +3,8 @@ class GameHandler {
   float radius = 30;
   float velocityX;
   float velocityY;
-  float posX = 50;
-  float posY = 50;
+  float posX = 300;
+  float posY = 600;
   float forceX;
   float forceY;
   float distance;
@@ -29,10 +29,10 @@ class GameHandler {
   // check for collison between Circular and Rectengular Objects
   boolean checkCollisionCR(ArrayList<Object> objects) {
 
-    float testX = posX;
-    float testY = posY;
     // Loop through all rectengular Objects and compute if they collide with player
     for (Object object : objects) {
+      float testX = posX;
+      float testY = posY;
       if (posX < object.posX) {
         testX = object.posX;
       } else if (posX > object.posX + object.w) {
@@ -43,15 +43,15 @@ class GameHandler {
       } else if (posY > object.posY + object.h) {
         testY = object.posY+object.h;
       }
+
       float distance = dist(posX, posY, testX, testY);
-      if(object.type == 1) println(distance);
       if (distance <= radius) {
         println("collision");
-        if (object.type == 1 && object.h > object.w) {
+        if (object.type == 1 && posX - object.posX < posY - object.posY) {
           velocityX = -velocityX;
           return false;
         }
-        if (object.type == 1 && object.w > object.h) {
+        if (object.type == 1 && (posY - object.posY < posX - object.posX /*add condition for down and right side*/)) {
           velocityY = -velocityY;
           return false;
         }
@@ -72,6 +72,10 @@ class GameHandler {
       forceX += (planet.radius * 2 * 5 * (planet.posX - posX))/(distance*distance);
       forceY += (planet.radius * 2 * 5 * (planet.posY - posY))/(distance*distance);
     }
+    // Calculte position of moving Objects
+
+
+
     // change velocity by force
     velocityX = velocityX + forceX / frameRate;
     velocityY = velocityY + forceY / frameRate;

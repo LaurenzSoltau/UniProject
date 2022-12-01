@@ -5,7 +5,7 @@ class Planet {
   int count;
   float posX;
   float posY;
-
+  
   Planet(float radius, float x, float y) {
     this.radius = radius;
     this.name = "planet" + count;
