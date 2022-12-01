@@ -10,6 +10,9 @@ class GameHandler {
   float distance;
   PImage backGround = loadImage("bg.png");
 
+
+  // ***CALCULATIONS*** //
+
   // check if player is colliding with one of the placed planets
   boolean checkCollisionCC(ArrayList<Planet> planets) {
     // loop through each planet to check collision with all the planets in the level
@@ -23,53 +26,95 @@ class GameHandler {
     return false;
   }
 
-  boolean checkCollisionCR(ArrayList<Obstacle> obstacles) {
-    float testX = 0;
-    float testY = 0;
-    for (Obstacle obstacle : obstacles) {
-      if (obstacle.type == 0) {
-        if (posX < obstacle.posX) {
-          testX = obstacle.posX;
-        } else if (posX > obstacle.posX + obstacle.w) {
-          testX = obstacle.posX+obstacle.w;
+  // check for collison between Circular and Rectengular Objects
+  boolean checkCollisionCR(ArrayList<Object> objects) {
+
+    float testX = posX;
+    float testY = posY;
+    // Loop through all rectengular Objects and compute if they collide with player
+    for (Object object : objects) {
+      if (posX < object.posX) {
+        testX = object.posX;
+      } else if (posX > object.posX + object.w) {
+        testX = object.posX+object.w;
+      }
+      if (posY < object.posY) {
+        testY = object.posY;
+      } else if (posY > object.posY + object.h) {
+        testY = object.posY+object.h;
+      }
+      float distance = dist(posX, posY, testX, testY);
+      if(object.type == 1) println(distance);
+      if (distance <= radius) {
+        println("collision");
+        if (object.type == 1 && object.h > object.w) {
+          velocityX = -velocityX;
+          return false;
         }
-        if (posY < obstacle.posY) {
-          testY = obstacle.posY;
-        } else if (posY > obstacle.posY + obstacle.h) {
-          testY = obstacle.posY+obstacle.h;
+        if (object.type == 1 && object.w > object.h) {
+          velocityY = -velocityY;
+          return false;
         }
-        float distX = posX - testX;
-        float distY = posY - testY;
-        float distance = sqrt((distX*distX) + (distY*distY));
-        if (distance <= radius)
-          return true;
+        // return true if they collide and object is obstacle
+        return true;
       }
     }
     return false;
   }
 
+  // calculate the Postition of the player
   void calcPosition(ArrayList<Planet> planets) {
     forceX = 0;
     forceY = 0;
+    // loop through each planet and calculate force to apply to the player
     for (Planet planet : planets) {
       float distance = dist(posX, posY, planet.posX, planet.posY);
       forceX += (planet.radius * 2 * 5 * (planet.posX - posX))/(distance*distance);
       forceY += (planet.radius * 2 * 5 * (planet.posY - posY))/(distance*distance);
     }
+    // change velocity by force
     velocityX = velocityX + forceX / frameRate;
     velocityY = velocityY + forceY / frameRate;
+    // change the player x and y position
     posX = posX + velocityX;
     posY = posY + velocityY;
   }
-  void drawObjects(ArrayList<Planet> planets, ArrayList<Obstacle> objects) {
+
+
+  // ***DRAWING*** //
+
+  // draw all the placed planets and all bouncers and rectengular objects
+
+
+
+  void drawStartScreen() {
+  }
+
+  void drawAllObjects(ArrayList<Planet> planets, ArrayList<Object> objects) {
     background(backGround);
     fill(255);
+    // loop through all planets to draw them
+    imageMode(CENTER);
     for (Planet planet : planets) {
-      circle(planet.posX, planet.posY, planet.radius*2);
+      if (planet.radius == 30) {
+        image(smallPlanet, planet.posX, planet.posY, 60, 60);
+      } else if (planet.radius == 60) {
+        circle(planet.posX, planet.posY, planet.radius*2);
+      }
     }
-    for (Obstacle object : objects) {
-      rect(object.posX, object.posY, object.w, object.h);
+    // loop through other objects to draw them
+    imageMode(CORNER);
+    for (Object object : objects) {
+      if (object.w == 100 && object.h == 20) {
+        image(spike_100_20, object.posX, object.posY);
+        //rect(object.posX, object.posY, 100, 20);
+      } else {
+        rect(object.posX, object.posY, object.w, object.h);
+      }
     }
-    circle(posX, posY, radius*2);
+    // draw player planet
+    imageMode(CENTER);
+    image(littlePlanet, posX, posY, 60, 60);
+    //circle(posX, posY, radius*2);
   }
 }
