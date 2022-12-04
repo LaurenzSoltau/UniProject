@@ -3,12 +3,16 @@ class GameHandler {
   float radius = 30;
   float velocityX;
   float velocityY;
-  float posX = 300;
-  float posY = 600;
+  float posX = 100;
+  float posY = 500;
+  float originPosX = 100;
+  float originPosY = 500;
   float forceX;
   float forceY;
   float distance;
+  boolean finished = false;
   PImage backGround = loadImage("bg.png");
+  LevelHandler levelHandler = new LevelHandler();
 
 
   // ***CALCULATIONS*** //
@@ -45,18 +49,26 @@ class GameHandler {
       }
 
       float distance = dist(posX, posY, testX, testY);
+      // collision detected
       if (distance <= radius) {
-        println("collision");
-        if (object.type == 1 && posX - object.posX < posY - object.posY) {
-          velocityX = -velocityX;
-          return false;
+        if (object.type == 0)
+          return true;   // return true if they collide and object is obstacle
+        else if (object.type == 1) {
+          // check on which side the circle had collided with the rectangle
+          boolean isAboveAC, isAboveDB;
+          // opposite corner = top_left , corner = bottom right
+          isAboveAC = ((object.posX - (object.posX + object.w)) * (posY - (object.posY + object.h)) - (object.posY - (object.posY + object.h)) * (posX - (object.posX + object.w))) > 0;
+          // opposite corner = bottom left, corner = upper right
+          isAboveDB = ((object.posX - (object.posX + object.w)) * (posY - object.posY) - ((object.posY + object.h) - object.posY) * (posX - (object.posX+object.w))) > 0;
+          // collided on left or right side
+          if ((!isAboveAC && isAboveDB) || (isAboveAC && !isAboveDB))
+            velocityX *= -1;
+          // collided on top or bottom side
+          else if ((isAboveAC && isAboveDB) || (!isAboveAC && !isAboveDB))
+            velocityY *= -1;
+        } else {
+         finished = true; 
         }
-        if (object.type == 1 && (posY - object.posY < posX - object.posX /*add condition for down and right side*/)) {
-          velocityY = -velocityY;
-          return false;
-        }
-        // return true if they collide and object is obstacle
-        return true;
       }
     }
     return false;
@@ -91,12 +103,35 @@ class GameHandler {
 
 
 
-  void drawStartScreen() {
+  ArrayList<Object> reloadLevel(ArrayList<Object> objects, int level) {
+    objects.clear();
+    posX = originPosX;
+    posY = originPosY;
+    velocityX = 0;
+    velocityY = 0;
+    return levelHandler.loadLevel(level);
   }
 
-  void drawAllObjects(ArrayList<Planet> planets, ArrayList<Object> objects) {
+  ArrayList<Object> loadNewLevel(ArrayList<Object> objects, int level) {
+    objects.clear();
+    posX = originPosX;
+    posY = originPosY;
+    velocityX = 0;
+    velocityY = 0;
+    finished = false;
+    return levelHandler.loadLevel(level);
+  }
+
+  boolean isFinished() {
+   return finished;
+  }
+
+  void drawAllObjects(ArrayList<Planet> planets, ArrayList<Object> objects, int deathCount, int level) {
     background(backGround);
     fill(255);
+    textSize(50);
+    text(deathCount, width-100, 50);
+    text(level, 100, 50);
     // loop through all planets to draw them
     imageMode(CENTER);
     for (Planet planet : planets) {
@@ -120,5 +155,21 @@ class GameHandler {
     imageMode(CENTER);
     image(littlePlanet, posX, posY, 60, 60);
     //circle(posX, posY, radius*2);
+  }
+
+  void drawStart() {
+    background(255);
+    textSize(100);
+    fill(0);
+    text("Start", 400, 400);
+    fill(255);
+  }
+
+  void drawEnd() {
+    background(255);
+    textSize(100);
+    fill(0);
+    text("End", 400, 400);
+    fill(255);
   }
 }
