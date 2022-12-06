@@ -67,7 +67,7 @@ class GameHandler {
           else if ((isAboveAC && isAboveDB) || (!isAboveAC && !isAboveDB))
             velocityY *= -1;
         } else {
-         finished = true; 
+          finished = true;
         }
       }
     }
@@ -123,7 +123,7 @@ class GameHandler {
   }
 
   boolean isFinished() {
-   return finished;
+    return finished;
   }
 
   void drawAllObjects(ArrayList<Planet> planets, ArrayList<Object> objects, int deathCount, int level) {
@@ -136,33 +136,24 @@ class GameHandler {
     imageMode(CENTER);
     for (Planet planet : planets) {
       if (planet.radius == 30) {
-        image(smallPlanet, planet.posX, planet.posY, 60, 60);
-      } else if (planet.radius == 60) {
-        circle(planet.posX, planet.posY, planet.radius*2);
+        image(smallPlanet, planet.posX, planet.posY, planet.radius*2, planet.radius*2);
+      } else if (planet.radius == 40) {
+        image(mediumPlanet, planet.posX, planet.posY, planet.radius*2, planet.radius*2);
       }
     }
     // loop through other objects to draw them
-    imageMode(CORNER);
     for (Object object : objects) {
-      if (object.w == 100 && object.h == 20) {
-        image(spike_100_20, object.posX, object.posY);
-        //rect(object.posX, object.posY, 100, 20);
-      } else {
-        rect(object.posX, object.posY, object.w, object.h);
-      }
+      imageMode(CORNER);
+      image(object.sprite, object.posX, object.posY);
+
+      // draw player planet
+      imageMode(CENTER);
+      image(littlePlanet, posX, posY, 60, 60);
     }
-    // draw player planet
-    imageMode(CENTER);
-    image(littlePlanet, posX, posY, 60, 60);
-    //circle(posX, posY, radius*2);
   }
 
   void drawStart() {
-    background(255);
-    textSize(100);
-    fill(0);
-    text("Start", 400, 400);
-    fill(255);
+    image(titleScreen, 0, 0);
   }
 
   void drawEnd() {

@@ -5,12 +5,13 @@ class Planet {
   int count;
   float posX;
   float posY;
-  
-  Planet(float radius, float x, float y) {
+  PImage sprite;
+  Planet(float radius, float x, float y, PImage sprite) {
     this.radius = radius;
     this.name = "planet" + count;
     count++;
     this.posX = x;
     this.posY = y;
+    this.sprite = sprite;
   }
 }

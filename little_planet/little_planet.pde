@@ -5,10 +5,17 @@ ArrayList<Object> objects = new ArrayList<Object>(); // List of all bumpers and 
 GameHandler game; // Handles Calculations and Drawing
 LevelHandler levelHandler; //levelHandler object which loads the levels
 float smallRadius = 30; // size of Small Planet
-float mediumRadius = 60; // size of Big Planet
+float mediumRadius = 40; // size of Big Planet
+PImage titleScreen;
 PImage littlePlanet;
 PImage smallPlanet;
-PImage spike_100_20;
+PImage mediumPlanet;
+PImage spike100x20;
+PImage spike20x100;
+PImage spike50x30;
+PImage bumper100x20;
+PImage bumper20x100;
+PImage goal;
 int deathCount;
 int level;
 
@@ -29,7 +36,14 @@ void setup() {
   size(1024, 768);
   littlePlanet = loadImage("erde.png");
   smallPlanet = loadImage("mars.png");
-  spike_100_20 = loadImage("spike100x20.png");
+  mediumPlanet = loadImage("medium_planet.png");
+  spike100x20 = loadImage("spike100x20.png");
+  spike20x100 = loadImage("spike20x100.png");
+  spike50x30 = loadImage("spike50x30.png");
+  bumper100x20 = loadImage("bumper100x20.png");
+  bumper20x100 = loadImage("bumper20x100.png");
+  titleScreen = loadImage("titelscreen.png");
+  goal = loadImage("goal50x50.png");
   game = new GameHandler();
   levelHandler = new LevelHandler();
   state = START;
@@ -38,12 +52,12 @@ void setup() {
 
 void mousePressed() {
   if (state == PLAYING)
-    planets.add(new Planet(smallRadius, mouseX, mouseY));
+    planets.add(new Planet(smallRadius, mouseX, mouseY, smallPlanet));
 }
 
 void keyPressed() {
   if (state == PLAYING)
-    planets.add(new Planet(mediumRadius, mouseX, mouseY));
+    planets.add(new Planet(mediumRadius, mouseX, mouseY, mediumPlanet));
   if (state == START) {
     state = PLAYING;
     objects = levelHandler.loadLevel(LEVEL1);
