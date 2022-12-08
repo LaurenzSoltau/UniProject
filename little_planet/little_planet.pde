@@ -38,6 +38,7 @@ int state = START;
 int LEVEL1 = 1;
 int LEVEL2 = 2;
 int LEVEL3 = 3;
+int totalLevels = 1;
 
 void setup() {
   size(1024, 768);
@@ -93,7 +94,10 @@ void keyPressed() {
     holdingSmallPlanet = false;
     cursor(ARROW);
   }
-  if (state == START) {
+  if (state == START || state == END) {
+    if (state == END) {
+      restart();
+    }
     lastTime = millis();
     counting = true;
     state = PLAYING;
@@ -104,8 +108,12 @@ void keyPressed() {
 
 
 void restart() {
-  
+  level = 1;
+  currentCount = 0;
+  deathCount = 0;
+  game.reset();
 }
+
 
 
 void draw() {
@@ -118,7 +126,7 @@ void draw() {
     game.calcPosition(planets);
     if (game.checkCollisionCC(planets) || game.checkCollisionCR(objects)) {
       if (game.isFinished()) {
-        if (level == 6) {
+        if (level == totalLevels) {
           state = END;
         }
         level++;
@@ -144,5 +152,4 @@ void draw() {
     game.drawHUD();
     text(mouseX + " " + mouseY, mouseX, mouseY);
   }
-  
 }

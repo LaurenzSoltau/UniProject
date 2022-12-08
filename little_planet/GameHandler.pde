@@ -173,6 +173,11 @@ class GameHandler {
     }
     return false;
   }
+  
+  void reset() {
+     posX = originPosX;
+     posY = originPosX;
+  }
 
   void drawHUD() {
     fill(50, 50, 50, 160);
