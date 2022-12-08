@@ -3,16 +3,22 @@ class GameHandler {
   float radius = 30;
   float velocityX;
   float velocityY;
-  float posX = 100;
-  float posY = 500;
-  float originPosX = 100;
-  float originPosY = 500;
+  float posX = 50;
+  float posY = 50;
+  float originPosX = 50;
+  float originPosY = 50;
   float forceX;
   float forceY;
   float distance;
   boolean finished = false;
   PImage backGround = loadImage("bg.png");
   LevelHandler levelHandler = new LevelHandler();
+
+  float buttonSmallPosX = 50;
+  float buttonSmallPosY = 700;
+  float buttonMediumPosX = 150;
+  float buttonMediumPosY = 700;
+
 
 
   // ***CALCULATIONS*** //
@@ -23,9 +29,10 @@ class GameHandler {
     for (Planet planet : planets) {
       // compute distance between the circles
       distance = dist(posX, posY, planet.posX, planet.posY);
-      if (distance <= radius + planet.radius)
+      if (distance <= radius + planet.radius) {
         // return collision true, if the distance is lessen than combined radiuses, because this is when the circles touch
         return true;
+      }
     }
     return false;
   }
@@ -68,6 +75,7 @@ class GameHandler {
             velocityY *= -1;
         } else {
           finished = true;
+          return true;
         }
       }
     }
@@ -126,12 +134,8 @@ class GameHandler {
     return finished;
   }
 
-  void drawAllObjects(ArrayList<Planet> planets, ArrayList<Object> objects, int deathCount, int level) {
+  void drawAllObjects(ArrayList<Planet> planets, ArrayList<Object> objects) {
     background(backGround);
-    fill(255);
-    textSize(50);
-    text(deathCount, width-100, 50);
-    text(level, 100, 50);
     // loop through all planets to draw them
     imageMode(CENTER);
     for (Planet planet : planets) {
@@ -144,12 +148,49 @@ class GameHandler {
     // loop through other objects to draw them
     for (Object object : objects) {
       imageMode(CORNER);
+      fill(255, 255, 255, 160);
       image(object.sprite, object.posX, object.posY);
+      rect(object.posX, object.posY, object.w, object.h);
 
       // draw player planet
       imageMode(CENTER);
       image(littlePlanet, posX, posY, 60, 60);
     }
+  }
+
+  boolean clickedSmall(float x, float y) {
+    distance = dist(x, y, buttonSmallPosX, buttonSmallPosY);
+    if (distance < 30) {
+      return true;
+    }
+    return false;
+  }
+
+  boolean clickedMedium(float x, float y) {
+    distance = dist(x, y, buttonMediumPosX, buttonMediumPosY);
+    if (distance < 40) {
+      return true;
+    }
+    return false;
+  }
+
+  void drawHUD() {
+    fill(50, 50, 50, 160);
+    rect(0, 630, width, height-630);
+   
+
+    image(smallPlanet, buttonSmallPosX, buttonSmallPosY);
+    image(mediumPlanet, buttonMediumPosX, buttonMediumPosY);
+   
+    
+    fill(255);
+    textSize(50);
+    text(deathCount, width-100, 50);
+    text(level, 100, 50);
+    text(round(currentCount/1000), width/2, 50);
+    text("Planets Remaining: " + planetsRemaining, buttonMediumPosX + 70, buttonMediumPosY + 20);
+    textSize(20);
+    text("Click on the planets on the left to place one", buttonMediumPosX + 70, buttonMediumPosY + 50);
   }
 
   void drawStart() {
@@ -161,6 +202,8 @@ class GameHandler {
     textSize(100);
     fill(0);
     text("End", 400, 400);
+    textSize(40);
+    text("Du hast" + round(currentCount/1000) + "Sekunden gebraucht", 200 , 500);
     fill(255);
   }
 }

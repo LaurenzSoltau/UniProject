@@ -16,6 +16,6 @@ class Object {
     this.w = w;
     this.h = h;
     this.type = type;
-    this.sprite = sprite;  
-}
+    this.sprite = sprite;
+  }
 }
