@@ -208,7 +208,7 @@ class GameHandler {
     fill(0);
     text("End", 400, 400);
     textSize(40);
-    text("Du hast" + round(currentCount/1000) + "Sekunden gebraucht", 200 , 500);
+    text("Du hast " + round(currentCount/1000) + " Sekunden gebraucht", 200 , 500);
     fill(255);
   }
 }

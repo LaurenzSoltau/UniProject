@@ -24,10 +24,10 @@ class LevelHandler {
        break;
        
     case 5:
-      objects.add(new Object(560, 400, 50, 50, 2, goal));
-      objects.add(new Object(100, 50, 20, 100, 0, spike20x100));
-      objects.add(new Object(100, 185, 20, 100, 0, spike20x100));
-      objects.add(new Object(100, 300, 20, 100, 0, spike20x100));
+      objects.add(new Object(450, 400, 50, 50, 2, goal));
+      objects.add(new Object(100, 0, 20, 100, 0, spike20x100));
+      objects.add(new Object(100, 100, 20, 100, 0, spike20x100));
+      objects.add(new Object(100, 200, 20, 100, 0, spike20x100));
       break;
       
       case 6:
