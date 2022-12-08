@@ -1,3 +1,4 @@
+import processing.sound.*;
 import java.util.ArrayList; // import the arrayList class
 
 ArrayList<Planet> planets = new ArrayList<Planet>(); // List of all the Placed Planets in each Level
@@ -25,6 +26,10 @@ float lastTime;
 boolean holdingSmallPlanet = false;
 boolean holdingMediumPlanet = false;
 int planetsRemaining = 3;
+SoundFile music;
+SoundFile death;
+SoundFile win;
+SoundFile place;
 
 // STATES
 int START = 0;
@@ -38,7 +43,7 @@ int state = START;
 int LEVEL1 = 1;
 int LEVEL2 = 2;
 int LEVEL3 = 3;
-int totalLevels = 1;
+int totalLevels = 6;
 
 void setup() {
   size(1024, 768);
@@ -55,6 +60,11 @@ void setup() {
   game = new GameHandler();
   levelHandler = new LevelHandler();
   state = START;
+  music = new SoundFile(this, "soundtrack.mp3");
+  win = new SoundFile(this, "win.wav");
+  death = new SoundFile(this, "deathSound.wav");
+  place = new SoundFile(this, "place.wav");
+  music.loop();
 }
 
 
@@ -64,12 +74,14 @@ void mousePressed() {
     return;
   }
   if (holdingSmallPlanet) {
+    place.play();
     planets.add(new Planet(smallRadius, mouseX, mouseY, smallPlanet));
     planetsRemaining--;
     holdingSmallPlanet = false;
     cursor(ARROW);
   }
   if (holdingMediumPlanet) {
+    place.play();
     planets.add(new Planet(mediumRadius, mouseX, mouseY, mediumPlanet));
     planetsRemaining--;
     holdingMediumPlanet = false;
@@ -126,6 +138,7 @@ void draw() {
     game.calcPosition(planets);
     if (game.checkCollisionCC(planets) || game.checkCollisionCR(objects)) {
       if (game.isFinished()) {
+        win.play();
         if (level == totalLevels) {
           state = END;
         }
@@ -134,6 +147,7 @@ void draw() {
         planets.clear();
         planetsRemaining = 3;
       } else {
+        death.play();
         holdingMediumPlanet = false;
         holdingSmallPlanet = false;
         cursor(ARROW);

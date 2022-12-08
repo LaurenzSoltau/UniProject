@@ -8,7 +8,7 @@ class LevelHandler {
     case 1:
       objects.add(new Object(750, 500, 50, 50, 2, goal));
       break;
-    /*case 2:
+    case 2:
       objects.add(new Object(1000, 480, 50, 50, 2, goal));
 
       break;
@@ -35,7 +35,7 @@ class LevelHandler {
       objects.add(new Object(30, 300, 20, 100, 1, bumper20x100));
       objects.add(new Object(270, 150, 20, 100, 1, bumper20x100));
       objects.add(new Object(170, 280, 100, 20, 0, spike100x20));
-      objects.add(new Object(270, 20, 20, 100, 0, spike20x100)); */
+      objects.add(new Object(270, 20, 20, 100, 0, spike20x100)); 
     }
     
   
