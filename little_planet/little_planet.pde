@@ -1,35 +1,34 @@
-import processing.sound.*;
+import processing.sound.*; // Import Soundlibrary
 import java.util.ArrayList; // import the arrayList class
 
-ArrayList<Planet> planets = new ArrayList<Planet>(); // List of all the Placed Planets in each Level
-ArrayList<Object> objects = new ArrayList<Object>(); // List of all bumpers and obstacles in each Level
-GameHandler game; // Handles Calculations and Drawing
-LevelHandler levelHandler; //levelHandler object which loads the levels
-float smallRadius = 30; // size of Small Planet
-float mediumRadius = 40; // size of Big Planet
-PImage titleScreen;
-PImage littlePlanet;
-PImage smallPlanet;
-PImage mediumPlanet;
-PImage spike100x20;
-PImage spike20x100;
-PImage spike50x30;
-PImage bumper100x20;
-PImage bumper20x100;
-PImage goal;
-int deathCount;
-int level;
-float startCount = 0;
-float currentCount = 0;
-boolean counting;
-float lastTime;
-boolean holdingSmallPlanet = false;
-boolean holdingMediumPlanet = false;
-int planetsRemaining = 3;
-SoundFile music;
-SoundFile death;
-SoundFile win;
-SoundFile place;
+private ArrayList<Planet> planets = new ArrayList<Planet>(); // List of all the Placed Planets in each Level
+private ArrayList<Object> objects = new ArrayList<Object>(); // List of all bumpers and obstacles in each Level
+private GameHandler game; // Handles Calculations and Drawing
+public float smallRadius = 30; // size of Small Planet
+public float mediumRadius = 40; // size of Big Planet
+public PImage titleScreen; // Image of the titlescreen
+public PImage littlePlanet; // Image for the character planet
+public PImage smallPlanet; // Image for the small planet
+public PImage mediumPlanet; // Image for the medium sized planet
+public PImage spike100x20; // Image for the 100x20 Spike
+public PImage spike20x100; // Image for the 20x100 Spike
+public PImage bumper100x20; // Image for the 100x20 Bumper
+public PImage bumper20x100; // Image for the 20x100 bumper
+public PImage goal; // Image for the goal flag
+public PImage backGround;
+public int deathCount; // counting the deaths in each run
+private int level; // current level
+public float startCount = 0; 
+private float currentCount = 0;
+private boolean counting;
+private float lastTime;
+private boolean holdingSmallPlanet = false;
+private boolean holdingMediumPlanet = false;
+public int planetsRemaining = 3;
+private SoundFile music;
+private SoundFile death;
+private SoundFile win;
+private SoundFile place;
 
 // STATES
 int START = 0;
@@ -52,13 +51,12 @@ void setup() {
   mediumPlanet = loadImage("medium_planet.png");
   spike100x20 = loadImage("spike100x20.png");
   spike20x100 = loadImage("spike20x100.png");
-  spike50x30 = loadImage("spike50x30.png");
   bumper100x20 = loadImage("bumper100x20.png");
   bumper20x100 = loadImage("bumper20x100.png");
   titleScreen = loadImage("titelscreen.png");
   goal = loadImage("goal50x50.png");
+  backGround = loadImage("bg.png");
   game = new GameHandler();
-  levelHandler = new LevelHandler();
   state = START;
   music = new SoundFile(this, "soundtrack.mp3");
   win = new SoundFile(this, "win.wav");
@@ -113,7 +111,7 @@ void keyPressed() {
     lastTime = millis();
     counting = true;
     state = PLAYING;
-    objects = levelHandler.loadLevel(LEVEL1);
+    objects = game.loadNewLevel(objects, 1);
     level = LEVEL1;
   }
 }

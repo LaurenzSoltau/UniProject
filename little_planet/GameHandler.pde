@@ -1,23 +1,21 @@
 // class that handles main game activity
 class GameHandler {
-  float radius = 30;
-  float velocityX;
-  float velocityY;
-  float posX = 50;
-  float posY = 50;
-  float originPosX = 50;
-  float originPosY = 50;
-  float forceX;
-  float forceY;
-  float distance;
-  boolean finished = false;
-  PImage backGround = loadImage("bg.png");
-  LevelHandler levelHandler = new LevelHandler();
-
-  float buttonSmallPosX = 50;
-  float buttonSmallPosY = 700;
-  float buttonMediumPosX = 150;
-  float buttonMediumPosY = 700;
+  private float radius = 30;
+  private float velocityX;
+  private float velocityY;
+  private float posX = 50;
+  private float posY = 50;
+  private float originPosX = 50;
+  private float originPosY = 50;
+  private float forceX;
+  private float forceY;
+  private float distance;
+  private boolean finished = false;
+  private LevelHandler levelHandler = new LevelHandler();
+  private float buttonSmallPosX = 50;
+  private float buttonSmallPosY = 700;
+  private float buttonMediumPosX = 150;
+  private float buttonMediumPosY = 700;
 
 
 
@@ -150,7 +148,7 @@ class GameHandler {
       imageMode(CORNER);
       fill(255, 255, 255, 160);
       image(object.sprite, object.posX, object.posY);
-      rect(object.posX, object.posY, object.w, object.h);
+      //rect(object.posX, object.posY, object.w, object.h);
 
       // draw player planet
       imageMode(CENTER);
@@ -173,21 +171,21 @@ class GameHandler {
     }
     return false;
   }
-  
+
   void reset() {
-     posX = originPosX;
-     posY = originPosX;
+    posX = originPosX;
+    posY = originPosX;
   }
 
   void drawHUD() {
     fill(50, 50, 50, 160);
     rect(0, 630, width, height-630);
-   
+
 
     image(smallPlanet, buttonSmallPosX, buttonSmallPosY);
     image(mediumPlanet, buttonMediumPosX, buttonMediumPosY);
-   
-    
+
+
     fill(255);
     textSize(50);
     text(deathCount, width-100, 50);
@@ -208,7 +206,7 @@ class GameHandler {
     fill(0);
     text("End", 400, 400);
     textSize(40);
-    text("Du hast " + round(currentCount/1000) + " Sekunden gebraucht", 220 , 500);
+    text("Du hast " + round(currentCount/1000) + " Sekunden gebraucht", 220, 500);
     text("Drücke eine Taste um nocheinmal zu spielen!", 120, 600);
     fill(255);
   }

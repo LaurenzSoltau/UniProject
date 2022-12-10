@@ -9,7 +9,7 @@ class LevelHandler {
       objects.add(new Object(750, 500, 50, 50, 2, goal));
       break;
     case 2:
-      objects.add(new Object(1000, 480, 50, 50, 2, goal));
+      objects.add(new Object(950, 480, 50, 50, 2, goal));
 
       break;
     case 3:
