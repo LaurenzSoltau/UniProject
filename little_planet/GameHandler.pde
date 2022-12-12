@@ -22,6 +22,8 @@ class GameHandler {
   // ***CALCULATIONS*** //
 
   // check if player is colliding with one of the placed planets
+  // parameter planet is list of all the planets placed by the player
+  // retuns if collision has happends
   boolean checkCollisionCC(ArrayList<Planet> planets) {
     // loop through each planet to check collision with all the planets in the level
     for (Planet planet : planets) {
@@ -36,6 +38,8 @@ class GameHandler {
   }
 
   // check for collison between Circular and Rectengular Objects
+  // parameter objects is list of all the rectengual objects in the level
+  // returns if collision has happend
   boolean checkCollisionCR(ArrayList<Object> objects) {
 
     // Loop through all rectengular Objects and compute if they collide with player
@@ -80,7 +84,8 @@ class GameHandler {
     return false;
   }
 
-  // calculate the Postition of the player
+  // calulates the position of the player with respect to the gravitational force of the placed planets
+  // the parameter planets is a ArrayList of all the placed Planets 
   void calcPosition(ArrayList<Planet> planets) {
     forceX = 0;
     forceY = 0;
@@ -108,7 +113,9 @@ class GameHandler {
   // draw all the placed planets and all bouncers and rectengular objects
 
 
-
+  // reloads the level and resets all the important variables
+  // the parameter objects is a list of all the objects in the level, level is specifing which level to reload
+  // returns a new list of all objects in the level
   ArrayList<Object> reloadLevel(ArrayList<Object> objects, int level) {
     objects.clear();
     posX = originPosX;
@@ -118,6 +125,9 @@ class GameHandler {
     return levelHandler.loadLevel(level);
   }
 
+  // loads ne level and resets all the important variables
+  // the parameter objects, is a list of the objects in the level, level is specifying the level
+  // returns new list with the objects for the next level
   ArrayList<Object> loadNewLevel(ArrayList<Object> objects, int level) {
     objects.clear();
     posX = originPosX;
@@ -127,11 +137,14 @@ class GameHandler {
     finished = false;
     return levelHandler.loadLevel(level);
   }
-
+  // is checking, if player has finished the current level
+  // return if player has finished
   boolean isFinished() {
     return finished;
   }
 
+  // draws all the objects to the screen
+  //takes a list of all places planets and all objects in the level as arguments
   void drawAllObjects(ArrayList<Planet> planets, ArrayList<Object> objects) {
     background(backGround);
     // loop through all planets to draw them
@@ -155,7 +168,9 @@ class GameHandler {
       image(littlePlanet, posX, posY, 60, 60);
     }
   }
-
+  
+  // checks if user clicked the smallPlanet in the hud
+  // retuns if he has or hasnt
   boolean clickedSmall(float x, float y) {
     distance = dist(x, y, buttonSmallPosX, buttonSmallPosY);
     if (distance < 30) {
@@ -164,6 +179,8 @@ class GameHandler {
     return false;
   }
 
+  // checks if user clicked the medium Planet in the hud
+  // retuns if he has or hasnt
   boolean clickedMedium(float x, float y) {
     distance = dist(x, y, buttonMediumPosX, buttonMediumPosY);
     if (distance < 40) {
@@ -172,11 +189,13 @@ class GameHandler {
     return false;
   }
 
+  // resets the x and y position of the player to the starting position
   void reset() {
     posX = originPosX;
     posY = originPosX;
   }
 
+  // draw the hud to the screen
   void drawHUD() {
     fill(50, 50, 50, 160);
     rect(0, 630, width, height-630);
@@ -196,10 +215,12 @@ class GameHandler {
     text("Click on the planets on the left to place one", buttonMediumPosX + 70, buttonMediumPosY + 50);
   }
 
+  // draws the startscreen  
   void drawStart() {
     image(titleScreen, 0, 0);
   }
 
+  // draws the endscreen
   void drawEnd() {
     background(255);
     textSize(100);

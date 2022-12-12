@@ -15,34 +15,31 @@ public PImage spike20x100; // Image for the 20x100 Spike
 public PImage bumper100x20; // Image for the 100x20 Bumper
 public PImage bumper20x100; // Image for the 20x100 bumper
 public PImage goal; // Image for the goal flag
-public PImage backGround;
+public PImage backGround; // Image for the background
 public int deathCount; // counting the deaths in each run
 private int level; // current level
-public float startCount = 0; 
+public float startCount = 0;
 private float currentCount = 0;
 private boolean counting;
 private float lastTime;
 private boolean holdingSmallPlanet = false;
 private boolean holdingMediumPlanet = false;
-public int planetsRemaining = 3;
+public int planetsRemaining = 3; // counts how many planets are left to place
 private SoundFile music;
 private SoundFile death;
 private SoundFile win;
 private SoundFile place;
 
 // STATES
-int START = 0;
-int PLAYING = 6;
-int WAITING_FOR_NEXT_LEVEL = 4;
-int END = 5;
+private int START = 0;
+private int PLAYING = 1;
+private int END = 2;
 
-int state = START;
+private int state = START;
 
 // LEVELS
-int LEVEL1 = 1;
-int LEVEL2 = 2;
-int LEVEL3 = 3;
-int totalLevels = 6;
+private int LEVEL1 = 1;
+private int totalLevels = 6;
 
 void setup() {
   size(1024, 768);
@@ -71,14 +68,14 @@ void mousePressed() {
     cursor(ARROW);
     return;
   }
-  if (holdingSmallPlanet) {
+  if (holdingSmallPlanet && !game.clickedSmall(mouseX, mouseY) && !game.clickedMedium(mouseX, mouseY)) {
     place.play();
     planets.add(new Planet(smallRadius, mouseX, mouseY, smallPlanet));
     planetsRemaining--;
     holdingSmallPlanet = false;
     cursor(ARROW);
   }
-  if (holdingMediumPlanet) {
+  if (holdingMediumPlanet && !game.clickedMedium(mouseX, mouseY) && !game.clickedSmall(mouseX, mouseY)) {
     place.play();
     planets.add(new Planet(mediumRadius, mouseX, mouseY, mediumPlanet));
     planetsRemaining--;
@@ -87,10 +84,22 @@ void mousePressed() {
   }
 
   if (game.clickedSmall(mouseX, mouseY)) {
+    if (holdingSmallPlanet == true || holdingMediumPlanet == true) {
+      holdingMediumPlanet = false;
+      holdingSmallPlanet = false;
+      cursor(ARROW);
+      return;
+    }
     holdingSmallPlanet = true;
     cursor(smallPlanet);
     //planets.add(new Planet(smallRadius, mouseX, mouseY, smallPlanet));
   } else if (game.clickedMedium(mouseX, mouseY)) {
+    if (holdingSmallPlanet == true || holdingMediumPlanet == true) {
+      holdingMediumPlanet = false;
+      holdingSmallPlanet = false;
+      cursor(ARROW);
+      return;
+    }
     holdingMediumPlanet = true;
     mediumPlanet.resize(40, 40);
     cursor(mediumPlanet);
@@ -111,12 +120,12 @@ void keyPressed() {
     lastTime = millis();
     counting = true;
     state = PLAYING;
-    objects = game.loadNewLevel(objects, 1);
+    objects = game.loadNewLevel(objects, LEVEL1);
     level = LEVEL1;
   }
 }
 
-
+// restarts the game and setting all relevant variables back to original state
 void restart() {
   level = 1;
   currentCount = 0;
